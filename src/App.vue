@@ -12,6 +12,11 @@
   const videoId = "f4df0165a54b486a9493145aed4a594c"
   const videoUrl = ref('')
 
+  onMounted(async () => {
+    const result = await axios.get('http://localhost:3000/session')
+    console.log(result)
+  })
+
   async function getVideoUrl(input) {
     console.log(input)
   try {
