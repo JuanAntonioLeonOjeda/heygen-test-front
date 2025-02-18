@@ -13,8 +13,11 @@
   const videoUrl = ref('')
 
   async function getVideoUrl(input) {
+    console.log(input)
   try {
-    const response = await axios.get(`http://localhost:3000/video?query=${input}`)
+    const response = await axios.post(`http://localhost:3000/claude`, {
+      question: input
+    })
     console.log(response.data)
     videoUrl.value = response.data.video_url
   } catch (error) {
