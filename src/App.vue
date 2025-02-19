@@ -40,7 +40,6 @@
   const videoElement = document.getElementById("avatarVideo")
 
   const initializeStream = () => {
-    console.log(avatar.value)
     avatar.value.on(StreamingEvents.STREAM_READY, handleStreamReady)
     avatar.value.on(StreamingEvents.STREAM_DISCONNECTED, handleStreamDisconnected)
   }
@@ -64,11 +63,11 @@
   }
 
   const terminateAvatarSession = async () => {
-    if (!avatar || !sessionId) return
+    if (!avatar.value || !sessionId) return
 
-    await avatar.stopAvatar()
+    await avatar.value.stopAvatar()
     videoElement.srcObject = null
-    avatar = null
+    avatar.value = null
   }
 
   const startConversation = async () => {
@@ -78,9 +77,9 @@
 
       if (token.error) throw new Error (token.error)
 
-      const avatar = await createStreamingAvatar(token)
-      avatar.value = avatar
-      const session = await createStreamingSession(avatar)
+      const streamAvatar = await createStreamingAvatar(token)
+      avatar.value = streamAvatar
+      const session = await createStreamingSession(streamAvatar)
 
       sessionStarted.value = session.session_id
 
