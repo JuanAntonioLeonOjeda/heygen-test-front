@@ -9,8 +9,6 @@
     Loading...
   </div>
   <div v-else>
-    <!-- <video v-if="videoUrl" :src="videoUrl" controls autoplay></video> -->
-    <!-- <p v-else>Loading...</p> -->
     <video id="avatarVideo" autoplay playsinline></video>
     <input
       type="text" 
