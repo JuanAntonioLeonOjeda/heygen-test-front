@@ -28,6 +28,7 @@ export const createStreamingSession = async (avatar) => {
       voice: {
         emotion: VoiceEmotion.FRIENDLY,
       },
+      language: 'es-ES',
       knowledgeBase: faq
     })
 
