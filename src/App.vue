@@ -1,4 +1,5 @@
 <template>
+  <video id="avatarVideo" autoplay playsinline />
   <button 
     v-if="!sessionStarted && !isLoading"
     @click="startConversation"
@@ -9,7 +10,6 @@
     Loading...
   </div>
   <div v-else>
-    <video id="avatarVideo" autoplay playsinline></video>
     <input
       type="text" 
       @keydown="handleKeyDown"
@@ -24,7 +24,8 @@
   import axios from 'axios'
   import { ref, onMounted } from 'vue'
   import {
-    StreamingEvents
+    StreamingEvents, 
+    TaskType
   } from "@heygen/streaming-avatar"
   import {createHeyGenToken} from './heygen/auth'
   import {
@@ -49,8 +50,6 @@
   }
 
   const handleStreamReady = (e) => {
-    console.log(e)
-    console.log(videoElement.value)
     if (e.detail && videoElement.value) {
         videoElement.value.srcObject = e.detail
         videoElement.value.onloadedmetadata = () => {
@@ -62,7 +61,7 @@
   }
 
   const handleStreamDisconnected = async () => {
-    console.log("Stream disconnected");
+    console.log("Stream disconnected")
     if (videoElement.value) {
       videoElement.value.srcObject = null
     }
@@ -99,11 +98,11 @@
 
   async function askQuestion(input) {
     try {
-    console.log(input)
-    const response = await axios.post(`http://localhost:3000/claude`, {
-      question: input
-    })
-    console.log(response.data)
+    avatar.value.speak({ text: input, taskType: TaskType.TALK })
+    // const response = await axios.post(`http://localhost:3000/claude`, {
+    //   question: input
+    // })
+    // console.log(response.data)
   } catch (error) {
     console.error("Error asking question:", error)
   }
