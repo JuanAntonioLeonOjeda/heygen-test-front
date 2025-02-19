@@ -14,8 +14,8 @@
       type="text" 
       @keydown="handleKeyDown"
     >
-    <button>
-      @click="stopConversation"
+    <button @click="stopConversation">
+      Stop Conversation
     </button>
   </div>
 </template>
@@ -94,23 +94,24 @@
 
   const stopConversation = () => {
     console.log('stahp')
+    terminateAvatarSession()
+    handleStreamDisconnected()
   }
 
-  // async function getVideoUrl(input) {
-  //   console.log(input)
-  // try {
-  //   const response = await axios.post(`http://localhost:3000/claude`, {
-  //     question: input
-  //   })
-  //   console.log(response.data)
-  //   videoUrl.value = response.data.video_url
-  // } catch (error) {
-  //   console.error("Error fetching video:", error)
-  // }
-  // }
+  async function askQuestion(input) {
+    try {
+    console.log(input)
+    const response = await axios.post(`http://localhost:3000/claude`, {
+      question: input
+    })
+    console.log(response.data)
+  } catch (error) {
+    console.error("Error asking question:", error)
+  }
+  }
 
   const handleKeyDown = async (e) => {
-    // if (e.key === 'Enter') getVideoUrl(e.target.value)
+    if (e.key === 'Enter') askQuestion(e.target.value)
   }
 </script>
 
