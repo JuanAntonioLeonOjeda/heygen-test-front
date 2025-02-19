@@ -14,7 +14,7 @@
       type="text" 
       @keydown="handleKeyDown"
     >
-    <button @click="stopConversation">
+    <button @click="terminateSession">
       Stop Conversation
     </button>
   </div>
@@ -37,7 +37,11 @@
   const sessionId = ref('')
   const avatar = ref(null)
 
-  const videoElement = document.getElementById("avatarVideo")
+  const videoElement = ref(null)
+
+  onMounted(() => {
+    videoElement.value = document.getElementById("avatarVideo")
+  })
 
   const initializeStream = () => {
     avatar.value.on(StreamingEvents.STREAM_READY, handleStreamReady)
@@ -45,10 +49,12 @@
   }
 
   const handleStreamReady = (e) => {
-    if (e.detail && videoElement) {
-        videoElement.srcObject = e.detail
-        videoElement.onloadedmetadata = () => {
-          videoElement.play().catch(console.error)
+    console.log(e)
+    console.log(videoElement.value)
+    if (e.detail && videoElement.value) {
+        videoElement.value.srcObject = e.detail
+        videoElement.value.onloadedmetadata = () => {
+          videoElement.value.play().catch(console.error)
         }
     } else {
       console.error("Stream is not available")
@@ -57,16 +63,16 @@
 
   const handleStreamDisconnected = async () => {
     console.log("Stream disconnected");
-    if (videoElement) {
-      videoElement.srcObject = null
+    if (videoElement.value) {
+      videoElement.value.srcObject = null
     }
   }
 
-  const terminateAvatarSession = async () => {
+  const terminateSession = async () => {
     if (!avatar.value || !sessionId) return
 
     await avatar.value.stopAvatar()
-    videoElement.srcObject = null
+    videoElement.value.srcObject = null
     avatar.value = null
   }
 
@@ -89,12 +95,6 @@
       console.error(error)
       isLoading.value = false
     }
-  }
-
-  const stopConversation = () => {
-    console.log('stahp')
-    terminateAvatarSession()
-    handleStreamDisconnected()
   }
 
   async function askQuestion(input) {
