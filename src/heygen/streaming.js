@@ -3,6 +3,8 @@ import StreamingAvatar, {
   VoiceEmotion
 } from "@heygen/streaming-avatar"
 
+import { faq } from './faq'
+
 export const createStreamingAvatar = async (token) => {
   try {
     const avatar = new StreamingAvatar({
@@ -24,8 +26,9 @@ export const createStreamingSession = async (avatar) => {
       quality: AvatarQuality.Medium,
       avatarName: "default",
       voice: {
-        emotion: VoiceEmotion.FRIENDLY
-      }
+        emotion: VoiceEmotion.FRIENDLY,
+      },
+      knowledgeBase: faq
     })
 
     return sessionData
@@ -33,6 +36,6 @@ export const createStreamingSession = async (avatar) => {
     return {
       message: "Error creating new Session",
       error,
-    };
+    }
   }
 }
