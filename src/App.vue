@@ -99,10 +99,6 @@
   async function askQuestion(input) {
     try {
     avatar.value.speak({ text: input, taskType: TaskType.TALK })
-    // const response = await axios.post(`http://localhost:3000/claude`, {
-    //   question: input
-    // })
-    // console.log(response.data)
   } catch (error) {
     console.error("Error asking question:", error)
   }
